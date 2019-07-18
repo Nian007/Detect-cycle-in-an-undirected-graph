@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<pair<int,int> >graph;
+bool vis[100005];
+int parent[100005];
+void init(){
+   for(int i=0;i<100005;i++)
+    parent[i]=i;
+}
+int Find(int x){
+      if(parent[x]==x)
+            return x;
+      return parent[x]=Find(parent[x]);
+}
+void Uni(int x,int y){
+    int x1=Find(x);
+    int y1=Find(y);
+    if(x1!=y1){
+        parent[x1]=y1;
+    }
+}
+bool iscycle(){
+     vector<pair<int,int> >::iterator it;
+     for(it=graph.begin();it!=graph.end();it++){
+        int tempx=it->first;
+        int tempy=it->second;
+        cout<<tempx<<" "<<tempy<<"\n";
+        int x=Find(tempx);
+        int y=Find(tempy);
+        if(x==y)
+            return true;
+        Uni(x,y);
+     }
+     return false;
+}
+int main()
+{
+    init();
+    int nodes,edges;
+    cin>>nodes>>edges;
+    for(int i=0;i<edges;i++){
+        int x,y;
+        cin>>x>>y;
+        graph.push_back({x,y});
+    }
+    if(iscycle()){
+        cout<<"Graph has cycle";
+    }
+    else{
+        cout<<"Graph doesn't have cycle";
+    }
+}
